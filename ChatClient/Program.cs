@@ -29,6 +29,19 @@ namespace ChatClient
             SendMessage(JsonSerializer.Serialize(connectMessage));
         }
 
+        static void Notificate()
+        {
+            client = new TcpClient(serverIpAddress, serverPort);
+
+            ThreadStart threadStart = new ThreadStart(ReceiveData);
+            Thread thread = new Thread(threadStart);
+            thread.Start();
+
+            ConnectNotification connectNotification = new ConnectNotification();
+            connectNotification.Name = "PeterParker";
+            SendMessage(JsonSerializer.Serialize(connectNotification));
+        }
+
         static void SendMessage(string messageJson)
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(messageJson);
@@ -74,6 +87,7 @@ namespace ChatClient
         static void Main()
         {
             Connect();
+            Notificate();
 
             while (true)
             {
