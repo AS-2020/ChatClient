@@ -11,7 +11,7 @@
                 case 4:
                     return new ConnectResponseMessageHandler();
                 case 5:
-                    return new NotificationHandler();
+                    return new UserCountMessageHandler();
             }
 
             return null;
