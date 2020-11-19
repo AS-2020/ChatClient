@@ -10,9 +10,17 @@ namespace ChatClient.MessageHandler
         {
             ConnectResponseMessage connectResponseMessage = message as ConnectResponseMessage;
             if (connectResponseMessage.Success)
-                Console.WriteLine($"Connected to {connectResponseMessage.Zaehler}!");
+            {
+                Program.IsConnected = true;
+                Program.SessionId = connectResponseMessage.SessionId;
+                Console.WriteLine($"Connected! Session Id: {Program.SessionId}");
+            }
             else
+            {
                 Console.WriteLine("Connection failed!");
+            }
+
+            Program.IsConnecting = false;
         }
     }
 }

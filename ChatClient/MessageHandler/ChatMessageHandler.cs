@@ -9,7 +9,7 @@ namespace ChatClient.MessageHandler
         public void Execute(TcpClient client, IMessage message)
         {
             ChatMessage chatMessage = message as ChatMessage;
-            Console.WriteLine($"Received: {chatMessage.Content}");
+            Console.WriteLine($"Received: {chatMessage.Content}"); // {chatMessage.Name}:
         }
     }
 }

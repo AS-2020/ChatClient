@@ -11,7 +11,7 @@ namespace ChatClient.MessageHandler
         public void Execute(TcpClient client, IMessage message)
         {
             ConnectNotification connectNotification = message as ConnectNotification;
-            Console.Write($"{connectNotification.Name}: ");
+            Console.Write($"{connectNotification.Name} joint");
 
         }
     }
