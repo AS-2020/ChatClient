@@ -39,7 +39,7 @@ namespace ChatClient
             thread.Start();
         }
 
-            static void Notificate()
+        static void Notificate() // löschen?
         {
             client = new TcpClient(serverIpAddress, serverPort);
 
@@ -47,8 +47,10 @@ namespace ChatClient
             Thread thread = new Thread(threadStart);
             thread.Start();
 
-            ConnectNotification connectNotification = new ConnectNotification();
-            connectNotification.Name = "PeterParker";
+            ConnectNotification connectNotification = new ConnectNotification
+            {
+                Name = "PeterParker"
+            };
             SendMessage(JsonSerializer.Serialize(connectNotification));
         }
 
@@ -85,9 +87,11 @@ namespace ChatClient
             try
             {
                 // Prepare chat message
-                ChatMessage chatMessage = new ChatMessage();
-                chatMessage.Content = messageContent;
-                chatMessage.SessionId = SessionId;
+                ChatMessage chatMessage = new ChatMessage
+                {
+                    Content = messageContent,
+                    SessionId = SessionId
+                };
 
                 // Send message
                 SendMessage(JsonSerializer.Serialize(chatMessage));
@@ -125,12 +129,26 @@ namespace ChatClient
             {
                 //Console.WriteLine("Nachricht eingeben:");
                 string input = Console.ReadLine();
-                SendChatMessage(input);
+                if (input == "exit")
+                {
+                    IsConnected = false;
+                    DisconnectMessage disconnectMessage = new DisconnectMessage
+                    {
+                        Username = username,
+                        SessionId = SessionId
+                    };
+                    SendMessage(JsonSerializer.Serialize(disconnectMessage));
+                }
+                else
+                {
+                    SendChatMessage(input);
+                }
             }
 
             client.Close();
             Console.WriteLine("Connection closed.");
             Console.ReadKey();
+            Environment.Exit(0);
         }
     }
 }
