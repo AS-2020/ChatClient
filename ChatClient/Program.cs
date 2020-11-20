@@ -19,6 +19,24 @@ namespace ChatClient
         public static string username;
         public static string password;
         public static Thread receiveDataThread;
+        public static bool IsApplicationExecuting = true;
+
+        static void Disconnect()
+        {
+            DisconnectMessage disconnectMessage = new DisconnectMessage()
+            {
+                SessionId = SessionId
+            };
+            SendMessage(JsonSerializer.Serialize(disconnectMessage));
+
+            StopReceiveDataThread();
+
+            IsConnecting = false;
+            IsConnected = false;
+            SessionId = string.Empty;
+            client.Close();
+            client = null;
+        }
 
         static void Connect(string username, string password)
         {
@@ -72,17 +90,20 @@ namespace ChatClient
 
         static void ReceiveData()
         {
-            while (true)
+            while (client != null)
             {
                 try
                 {
-                    byte[] data = new byte[256];
-                    int bytes = client.GetStream().Read(data, 0, data.Length);
-                    string responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                    GenericMessage genericMessage = JsonSerializer.Deserialize<GenericMessage>(responseData);
-                    IMessage message = MessageFactory.GetMessage(genericMessage.MessageId, responseData);
-                    IMessageHandler messageHandler = MessageHandlerFactory.GetMessageHandler(genericMessage.MessageId);
-                    messageHandler.Execute(client, message);
+                    lock (client)
+                    {
+                        byte[] data = new byte[256];
+                        int bytes = client.GetStream().Read(data, 0, data.Length);
+                        string responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
+                        GenericMessage genericMessage = JsonSerializer.Deserialize<GenericMessage>(responseData);
+                        IMessage message = MessageFactory.GetMessage(genericMessage.MessageId, responseData);
+                        IMessageHandler messageHandler = MessageHandlerFactory.GetMessageHandler(genericMessage.MessageId);
+                        messageHandler.Execute(client, message);
+                    }
                 }
                 catch (System.IO.IOException)
                 { }
@@ -117,38 +138,36 @@ namespace ChatClient
 
         static void Main()
         {
-
-            Menu();
-
-            while (IsConnecting)
+            while (IsApplicationExecuting)
             {
+                Console.Clear();
 
-            }
+                Menu();
 
-            while (IsConnected)
-            {
-                //Console.WriteLine("Nachricht eingeben:");
-                string input = Console.ReadLine();
-                if (input == "exit")
+                while (IsConnecting)
                 {
-                    IsConnected = false;
-                    DisconnectMessage disconnectMessage = new DisconnectMessage
+
+                }
+
+                while (IsConnected)
+                {
+                    //Console.WriteLine("Nachricht eingeben:");
+                    string input = Console.ReadLine();
+                    switch (input)
                     {
-                        Username = username,
-                        SessionId = SessionId
-                    };
-                    SendMessage(JsonSerializer.Serialize(disconnectMessage));
-                }
-                else
-                {
-                    SendChatMessage(input);
+                        case "/disconnect":
+                            Disconnect();
+                            break;
+                        case "/exit":
+                            Disconnect();
+                            IsApplicationExecuting = false;
+                            break;
+                        default:
+                            SendChatMessage(input);
+                            break;
+                    }
                 }
             }
-
-            client.Close();
-            Console.WriteLine("Connection closed.");
-            Console.ReadKey();
-            Environment.Exit(0);
         }
 
         static void Menu()

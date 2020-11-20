@@ -11,7 +11,6 @@ namespace ChatClient.MessageHandler
         public void Execute(TcpClient client, IMessage message)
         {
             RegisterResponseMessage registerResponseMessage = message as RegisterResponseMessage;
-            Console.WriteLine($"{registerResponseMessage.Content}");
 
             if (registerResponseMessage.Success)
             {
