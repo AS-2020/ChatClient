@@ -16,6 +16,9 @@ namespace ChatClient
         public static string SessionId;
         public static bool IsConnected = false;
         public static bool IsConnecting = false;
+        public static string username;
+        public static string password;
+        public static Thread receiveDataThread;
 
         static void Connect(string username, string password)
         {
@@ -32,28 +35,34 @@ namespace ChatClient
             StartReceiveDataThread();
             SendMessage(JsonSerializer.Serialize(connectMessage));
         }
+        static void Register(string username, string password)
+        {
+            IsConnecting = true;
+
+            client = new TcpClient(serverIpAddress, serverPort);
+
+            RegisterMessage registerMessage = new RegisterMessage
+            {
+                ServerPassword = "test123",
+                Username = username,
+                Password = password
+            };
+
+            StartReceiveDataThread();
+            SendMessage(JsonSerializer.Serialize(registerMessage));
+        }
         public static void StartReceiveDataThread()
         {
             ThreadStart threadStart = new ThreadStart(ReceiveData);
-            Thread thread = new Thread(threadStart);
-            thread.Start();
+            receiveDataThread = new Thread(threadStart);
+            receiveDataThread.Start();
         }
-
-        static void Notificate() // löschen?
+        public static void StopReceiveDataThread()
         {
-            client = new TcpClient(serverIpAddress, serverPort);
-
-            ThreadStart threadStart = new ThreadStart(ReceiveData);
-            Thread thread = new Thread(threadStart);
-            thread.Start();
-
-            ConnectNotification connectNotification = new ConnectNotification
-            {
-                Name = "PeterParker"
-            };
-            SendMessage(JsonSerializer.Serialize(connectNotification));
+            receiveDataThread.Interrupt();
         }
 
+        
         static void SendMessage(string messageJson)
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(messageJson);
@@ -108,17 +117,8 @@ namespace ChatClient
 
         static void Main()
         {
-            Console.WriteLine("Username: ");
-            string username = Console.ReadLine();
 
-
-            Console.WriteLine("Password: ");
-            string password = Console.ReadLine();
-
-            Console.WriteLine("Connecting to server.");
-            Connect(username, password);
-
-            // Notificate(); 
+            Menu();
 
             while (IsConnecting)
             {
@@ -149,6 +149,50 @@ namespace ChatClient
             Console.WriteLine("Connection closed.");
             Console.ReadKey();
             Environment.Exit(0);
+        }
+
+        static void Menu()
+        {
+            bool test = true;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("(1)  Anmelden");
+                Console.WriteLine("(2)  Neuen Benutzer registrieren");
+                ConsoleKeyInfo key = Console.ReadKey();
+                switch (key.Key)
+                {
+                    case ConsoleKey.D1:
+                        Console.Clear();
+                        Console.Write("Username: ");
+                        username = Console.ReadLine();
+
+                        Console.Write("Password: ");
+                        password = Console.ReadLine();
+
+                        Console.WriteLine("Connecting to server.");
+                        Connect(username, password);
+                        test = false;
+                        break;
+                    case ConsoleKey.D2:
+                        Console.Clear();
+                        Console.Write("New Username: ");
+                        username = Console.ReadLine();
+
+
+                        Console.Write("New Password: ");
+                        password = Console.ReadLine();
+
+                        Register(username, password);
+
+                        test = false;
+                        break;
+
+                    default:
+                        break;
+                }
+            } while (test);
+
         }
     }
 }

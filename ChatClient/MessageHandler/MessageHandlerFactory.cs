@@ -14,6 +14,8 @@
                     return new UserCountMessageHandler();
                 case 6:
                     return new DisconnectResponseMessageHandler();
+                case 8:
+                    return new RegisterResponseMessageHandler();
             }
 
             return null;
