@@ -1,6 +1,7 @@
 ﻿using ChatClient.MessageHandler;
 using ChatProtocol;
 using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text.Json;
 using System.Threading;
@@ -21,6 +22,17 @@ namespace ChatClient
         public static Thread receiveDataThread;
         public static bool IsApplicationExecuting = true;
 
+        public static List<User> Users = new List<User>();
+
+
+        public static void RequestUserList()
+        {
+            UserListRequestMessage userListRequestMessage = new UserListRequestMessage
+            {
+                SessionId = SessionId
+            };
+            SendMessage(JsonSerializer.Serialize(userListRequestMessage));
+        }
         static void Disconnect()
         {
             DisconnectMessage disconnectMessage = new DisconnectMessage()
@@ -96,7 +108,7 @@ namespace ChatClient
                 {
                     lock (client)
                     {
-                        byte[] data = new byte[256];
+                        byte[] data = new byte[1000];
                         int bytes = client.GetStream().Read(data, 0, data.Length);
                         string responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
                         GenericMessage genericMessage = JsonSerializer.Deserialize<GenericMessage>(responseData);

@@ -14,6 +14,8 @@ namespace ChatClient.MessageHandler
                 Program.IsConnected = true;
                 Program.SessionId = connectResponseMessage.SessionId;
                 Console.WriteLine($"Connected! Session Id: {Program.SessionId}");
+
+                Program.RequestUserList();
             }
             else
             {

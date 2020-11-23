@@ -9,7 +9,12 @@ namespace ChatClient.MessageHandler
         public void Execute(TcpClient client, IMessage message)
         {
             ChatMessage chatMessage = message as ChatMessage;
-            Console.WriteLine($"Received: {chatMessage.Content}"); // {chatMessage.Name}:
+            User user = Program.Users.Find(u => u.Id == chatMessage.UserId);
+            string username = $"Unbekannt ({chatMessage.UserId})";
+            if (user != null)
+                username = user.Username;
+
+            Console.WriteLine($"{username}: {chatMessage.Content}");
         }
     }
 }
