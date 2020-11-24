@@ -90,6 +90,8 @@ namespace ChatClient
         public static void StopReceiveDataThread()
         {
             receiveDataThread.Interrupt();
+           //if (receiveDataThread != null)
+           //    receiveDataThread.Join();
         }
 
         
@@ -108,7 +110,7 @@ namespace ChatClient
                 {
                     lock (client)
                     {
-                        byte[] data = new byte[1000];
+                        byte[] data = new byte[1024];
                         int bytes = client.GetStream().Read(data, 0, data.Length);
                         string responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
                         GenericMessage genericMessage = JsonSerializer.Deserialize<GenericMessage>(responseData);
