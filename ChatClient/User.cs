@@ -8,5 +8,10 @@ namespace ChatClient
     {
         public int Id { get; set; }
         public string Username { get; set; }
+
+        public override string ToString()
+        {
+            return $"UserId: {Id} Username: {Username}";
+        }
     }
 }

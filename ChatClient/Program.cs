@@ -2,6 +2,7 @@
 using ChatProtocol;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text.Json;
 using System.Threading;
@@ -90,11 +91,11 @@ namespace ChatClient
         public static void StopReceiveDataThread()
         {
             receiveDataThread.Interrupt();
-           //if (receiveDataThread != null)
-           //    receiveDataThread.Join();
+            //if (receiveDataThread != null)
+            //    receiveDataThread.Join();
         }
 
-        
+
         static void SendMessage(string messageJson)
         {
             byte[] data = System.Text.Encoding.UTF8.GetBytes(messageJson);
@@ -126,7 +127,7 @@ namespace ChatClient
             }
         }
 
-        static void SendChatMessage(string messageContent)
+        static void SendChatMessage(string messageContent, int id)
         {
             try
             {
@@ -134,7 +135,8 @@ namespace ChatClient
                 ChatMessage chatMessage = new ChatMessage
                 {
                     Content = messageContent,
-                    SessionId = SessionId
+                    SessionId = SessionId,
+                    PrivateId = id
                 };
 
                 // Send message
@@ -176,11 +178,50 @@ namespace ChatClient
                             Disconnect();
                             IsApplicationExecuting = false;
                             break;
+                        case "/users":
+                            PrintUsers();
+                            break;
+                        case "/user":
+                            GetUserId();
+                            break;
+                        case "/message":
+                            PrivateMessage();
+                            break;
                         default:
-                            SendChatMessage(input);
+                            SendChatMessage(input, 0);
                             break;
                     }
                 }
+            }
+        }
+
+        static void PrivateMessage()
+        {
+            Console.WriteLine("Enter UserId!");            
+            if (int.TryParse(Console.ReadLine(), out int privateId))
+            {
+                Console.WriteLine("Enter private Message!");
+                string privatemessage = Console.ReadLine();
+                SendChatMessage(privatemessage, privateId);
+            }
+
+        }
+
+        static void GetUserId()
+        {
+            Console.WriteLine("Enter Username!");
+            string searchuser = Console.ReadLine();
+            var queruser = from u in Users where u.Username.ToLower().Contains(searchuser.ToLower()) select u;
+            foreach (User u in queruser)
+            {
+                Console.WriteLine(u);
+            }
+        }
+        static void PrintUsers()
+        {
+            foreach (User u in Users)
+            {
+                Console.WriteLine(u);
             }
         }
 
@@ -225,7 +266,6 @@ namespace ChatClient
                         break;
                 }
             } while (test);
-
         }
     }
 }
