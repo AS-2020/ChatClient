@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatClient", "ChatClient\ChatClient.csproj", "{687AF917-21CC-4D09-8060-E2626704920A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "ChatClient\ChatClient.csproj", "{687AF917-21CC-4D09-8060-E2626704920A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientLibrary", "ClientLibrary\ClientLibrary.csproj", "{E0AC5140-7302-4CAC-9614-40A350D4F82D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReferencedAssemblies", "ReferencedAssemblies", "{8384349B-9D8C-4911-B631-E2C9B26B6EC9}"
+	ProjectSection(SolutionItems) = preProject
+		..\ChatServer\ChatProtocol\bin\Debug\netcoreapp3.1\ChatProtocol.dll = ..\ChatServer\ChatProtocol\bin\Debug\netcoreapp3.1\ChatProtocol.dll
+		ClientLibrary\bin\Debug\netcoreapp3.1\ClientLibrary.dll = ClientLibrary\bin\Debug\netcoreapp3.1\ClientLibrary.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,10 @@ Global
 		{687AF917-21CC-4D09-8060-E2626704920A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{687AF917-21CC-4D09-8060-E2626704920A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{687AF917-21CC-4D09-8060-E2626704920A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0AC5140-7302-4CAC-9614-40A350D4F82D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0AC5140-7302-4CAC-9614-40A350D4F82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0AC5140-7302-4CAC-9614-40A350D4F82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0AC5140-7302-4CAC-9614-40A350D4F82D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

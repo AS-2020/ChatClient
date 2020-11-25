@@ -8,7 +8,7 @@ namespace ChatClient.MessageHandler
 {
     class DisconnectResponseMessageHandler : IMessageHandler
     {
-        public void Execute(TcpClient client, IMessage message)
+        public void Execute(IMessage message)
         {
             DisconnectResponseMessage disconnectResponseMessage = message as DisconnectResponseMessage;
 

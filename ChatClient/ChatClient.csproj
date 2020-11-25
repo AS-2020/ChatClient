@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,6 +8,9 @@
   <ItemGroup>
     <Reference Include="ChatProtocol">
       <HintPath>..\..\ChatServer\ChatProtocol\bin\Debug\netcoreapp3.1\ChatProtocol.dll</HintPath>
+    </Reference>
+    <Reference Include="ClientLibrary">
+      <HintPath>..\ReferencedAssemblies\ClientLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -6,23 +6,21 @@ namespace ChatClient.MessageHandler
 {
     public class ConnectResponseMessageHandler : IMessageHandler
     {
-        public void Execute(TcpClient client, IMessage message)
+        public void Execute(IMessage message)
         {
             ConnectResponseMessage connectResponseMessage = message as ConnectResponseMessage;
             if (connectResponseMessage.Success)
             {
-                Program.IsConnected = true;
-                Program.SessionId = connectResponseMessage.SessionId;
-                Console.WriteLine($"Connected! Session Id: {Program.SessionId}");
+                Program.Client.SessionId = connectResponseMessage.SessionId;
+                Console.WriteLine($"Connected! Session Id: {Program.Client.SessionId}");
 
-                Program.RequestUserList();
+                Program.Client.RequestUserList();
             }
             else
             {
                 Console.WriteLine("Connection failed!");
             }
 
-            Program.IsConnecting = false;
         }
     }
 }

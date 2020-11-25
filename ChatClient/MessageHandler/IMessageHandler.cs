@@ -5,6 +5,6 @@ namespace ChatClient.MessageHandler
 {
     public interface IMessageHandler
     {
-        public void Execute(TcpClient client, IMessage message);
+        public void Execute(IMessage message);
     }
 }

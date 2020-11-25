@@ -6,7 +6,7 @@ namespace ChatClient.MessageHandler
 {
     public class ChatMessageHandler : IMessageHandler
     {
-        public void Execute(TcpClient client, IMessage message)
+        public void Execute(IMessage message)
         {
             ChatMessage chatMessage = message as ChatMessage;
             User user = Program.Users.Find(u => u.Id == chatMessage.UserId);

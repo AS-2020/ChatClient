@@ -14,3 +14,4 @@ C:\Daten\Umschulung_Fachinformatiker\Vertiefung_AE\Klytta\4_5_Woche\ChatClient\C
 C:\Daten\Umschulung_Fachinformatiker\Vertiefung_AE\Klytta\4_5_Woche\ChatClient\ChatClient\obj\Debug\netcoreapp3.1\ChatClient.dll
 C:\Daten\Umschulung_Fachinformatiker\Vertiefung_AE\Klytta\4_5_Woche\ChatClient\ChatClient\obj\Debug\netcoreapp3.1\ChatClient.pdb
 C:\Daten\Umschulung_Fachinformatiker\Vertiefung_AE\Klytta\4_5_Woche\ChatClient\ChatClient\obj\Debug\netcoreapp3.1\ChatClient.genruntimeconfig.cache
+C:\Daten\Umschulung_Fachinformatiker\Vertiefung_AE\Klytta\4_5_Woche\ChatClient\ChatClient\bin\Debug\netcoreapp3.1\ClientLibrary.dll
