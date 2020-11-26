@@ -67,8 +67,8 @@ namespace ChatClient
                             Client.Disconnect();
                             break;
                         case "/exit":
-                            Client.Disconnect();
                             IsApplicationExecuting = false;
+                            Client.Disconnect();
                             break;
                         case "/users":
                             PrintUsers();
